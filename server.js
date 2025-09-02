@@ -21,6 +21,7 @@ app.use(morgan("dev"));
 app.use(
   cors({
     origin: "*",
+    credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
