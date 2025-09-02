@@ -20,10 +20,49 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: "*",
+    credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+
+
+
+
+
+
+const allowedOrigins = [
+  "http://localhost:3000",                               // your React dev server
+  "https://yashraj-ghemud.github.io/yashraj-JSRG"      // your GitHub Pages site
+];
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(
+        new Error(`CORS policy forbids access from origin ${origin}`)
+      );
+    },
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+
+
+
+
+
+
+
+
+
+
 app.use(express.json());
 
 // Routes
