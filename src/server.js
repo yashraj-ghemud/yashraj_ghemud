@@ -18,32 +18,30 @@ const MONGO_URI =
 // Middlewares
 app.use(helmet());
 app.use(morgan("dev"));
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-
 
 
 
 
 
 const allowedOrigins = [
-  "http://localhost:3000",                               // your React dev server
-  "https://yashraj-ghemud.github.io/yashraj-JSRG"      // your GitHub Pages site
+  "http://localhost:3000",          // during local React dev
+  "https://yashraj-ghemud.github.io",
+  "https://yashraj-ghemud.github.io/yashraj-JSRG",
+   // your GitHub Pages root origin
 ];
+
 app.use(
   cors({
     origin(origin, callback) {
-      // allow requests with no origin (like mobile apps or curl)
+      // allow curl or Postman (no origin)
       if (!origin) return callback(null, true);
+
+      // whitelist match
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
+
+      // all others are forbidden
       return callback(
         new Error(`CORS policy forbids access from origin ${origin}`)
       );
@@ -52,15 +50,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-
-
-
-
-
-
-
-
 
 
 app.use(express.json());
